@@ -23,7 +23,7 @@ class MastermindSidecar:
             "repo": self.repo_name,
             "uptime_seconds": uptime,
             "status": "healthy",
-            "shadow_infrastructure": "ACTIVE"
+            "integrity": "ACTIVE"
         }
 
     def status(self) -> str:
