@@ -1,0 +1,10 @@
+{
+  "system_id": "openai-reasoning-kv-sentinel",
+  "shadow_mode": "ACTIVE",
+  "mastermind_synced": true,
+  "telemetry": {
+    "kv_eviction_efficiency": 0.64,
+    "dispatcher_overhead_ms": 0.05,
+    "self_healing": true
+  }
+}
