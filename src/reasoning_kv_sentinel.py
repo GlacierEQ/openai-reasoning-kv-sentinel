@@ -5,6 +5,7 @@ Innovations (implemented, tested):
   1. Shannon-entropy trajectory pruner for test-time compute KV pressure
   2. Schema-validated tool dispatcher (required fields + basic types)
   3. Soft-cap eviction when retained cache exceeds max_cache_tokens
+  4. Optional ONNX keep-importance scores (portable runtime; Python fallback)
 """
 from __future__ import annotations
 
@@ -36,6 +37,8 @@ class ReasoningKVSentinel:
         max_cache_tokens: int = 32768,
         entropy_threshold: float = 0.35,
         keep_tail: int = 10,
+        use_onnx: bool = False,
+        onnx_threshold: float = 0.45,
     ) -> None:
         if max_cache_tokens < 1:
             raise ValueError("max_cache_tokens must be >= 1")
@@ -46,8 +49,15 @@ class ReasoningKVSentinel:
         self.max_cache_tokens = max_cache_tokens
         self.entropy_threshold = entropy_threshold
         self.keep_tail = keep_tail
+        self.use_onnx = use_onnx
+        self.onnx_threshold = onnx_threshold
         self.active_cache_tokens = 0
         self.evicted_tokens_count = 0
+        self._onnx_scorer = None
+        if use_onnx:
+            from onnx_kv_scorer import OnnxKeepScorer
+
+            self._onnx_scorer = OnnxKeepScorer()
 
     def compute_token_entropy(self, token_probs: list[float]) -> float:
         return shannon_entropy(token_probs)
@@ -56,7 +66,7 @@ class ReasoningKVSentinel:
         self, tokens: list[dict[str, Any]]
     ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """
-        Drop low-entropy filler tokens; keep anchors, high-entropy steps, and tail.
+        Drop low-value tokens; keep anchors, high-entropy / high-ONNX-score steps, and tail.
         If still over max_cache_tokens, drop oldest non-anchors first.
         """
         start = time.perf_counter()
@@ -64,13 +74,21 @@ class ReasoningKVSentinel:
         retained: list[dict[str, Any]] = []
         evicted = 0
         tail_start = max(0, n - self.keep_tail)
+        onnx_backend = None
+        scores = None
+        if self.use_onnx and self._onnx_scorer is not None:
+            scores = self._onnx_scorer.score(tokens, keep_tail=self.keep_tail)
+            onnx_backend = self._onnx_scorer.backend
 
         for idx, item in enumerate(tokens):
             probs = item.get("probs") or [1.0]
             entropy = shannon_entropy(probs)
             is_anchor = bool(item.get("is_anchor", False))
             in_tail = idx >= tail_start
-            if is_anchor or entropy >= self.entropy_threshold or in_tail:
+            onnx_keep = False
+            if scores is not None and idx < len(scores):
+                onnx_keep = float(scores[idx]) >= self.onnx_threshold
+            if is_anchor or entropy >= self.entropy_threshold or in_tail or onnx_keep:
                 retained.append(item)
             else:
                 evicted += 1
@@ -108,6 +126,8 @@ class ReasoningKVSentinel:
             "pressure_evictions": pressure_evictions,
             "compression_ratio": round(compression_ratio, 4),
             "latency_ms": round(elapsed_ms, 4),
+            "use_onnx": bool(self.use_onnx),
+            "onnx_backend": onnx_backend,
             "status": (
                 "NOMINAL"
                 if self.active_cache_tokens <= self.max_cache_tokens

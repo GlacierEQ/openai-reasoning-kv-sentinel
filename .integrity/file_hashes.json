@@ -1,0 +1,17 @@
+{
+  "repo": "openai-reasoning-kv-sentinel",
+  "algorithm": "sha256",
+  "file_count": 10,
+  "hashes": {
+    "README.md": "eda0d8daf10d584968c4cfc3e667676343484cac82688bd7e4597fd439e8cd40",
+    "AKOS.md": "57c876485756dec92730b58c01289700971150a3f28c0d217a8a2fb98603730e",
+    "AGENTS.md": "d541b5758f542a980710760c65e144e27fb4b96e1bc9e9dceddcb2ed3e5da0d6",
+    "HELIX_STRAND.md": "805a634054df6eb4200b3c7eca0c520e8ddc3412f117a74670e5305896bf2505",
+    "mastermind_sidecar.py": "969a97152109545c20c7d9e063778f21ddd4229ec04317f78a9dca5df8db92ce",
+    "SECURITY_AND_FLEET_OPS.md": "26141c0f07d95847d679de423ddb7bdee6f3e319d204383c89a58d6d3bb610c7",
+    "ISSUE_CONTRACT.md": "f54b4d2a828ad8009082948086d18cd1d2922a1b2a86f3011bcfcf5ecc3a85d7",
+    "HELIX.md": "c172b83c33ef56ab8319c42f6fee716f61c25241c3a8b3e6155508fdf98610c7",
+    "tests/test_sentinel.py": "35d492da5186dbd693df2667039e3835ce6dec6fcbf2d66b5f0212277beeee7f",
+    "src/reasoning_kv_sentinel.py": "011fcc036ebc9919b0a2fbca3ec829a97fe51d3db5a35bd55663d1ed025b22a5"
+  }
+}
