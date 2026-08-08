@@ -1,0 +1,75 @@
+name: Public Reasoning Retention Truth Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Compile Python public core
+        run: |
+          python -m py_compile \
+            src/reasoning_kv_sentinel.py \
+            src/onnx_kv_scorer.py \
+            scripts/verify_public_core.py \
+            tests/test_sentinel.py \
+            tests/test_onnx_kv.py
+
+      - name: Verify Python retention policy
+        env:
+          PYTHONPATH: src
+        run: python scripts/verify_public_core.py
+
+      - name: Compile historical C++ prototype separately
+        run: |
+          g++ -std=c++17 -Wall -Wextra -pedantic src/kv_entropy_pruner.cpp -o /tmp/kv_entropy_pruner
+          /tmp/kv_entropy_pruner
+
+      - name: Verify public truth boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          readme = Path("README.md").read_text(encoding="utf-8")
+          required = [
+              "Independent portfolio project",
+              "LOCAL_REASONING_RECORD_RETENTION_POLICY",
+              "NO_KV_TENSOR_MUTATION",
+              "NO_REASONING_QUALITY_BENCHMARK",
+              "not affiliated with, endorsed by, employed by, or deployed at OpenAI",
+              "does not invoke a tool",
+          ]
+          missing = [item for item in required if item not in readme]
+          if missing:
+              raise SystemExit(f"README missing truth-boundary text: {missing}")
+          PY
+
+      - name: Upload bounded verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reasoning-retention-receipt-py${{ matrix.python-version }}
+          path: artifacts/public-core/
+          if-no-files-found: error
