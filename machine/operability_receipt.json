@@ -1,0 +1,26 @@
+{
+  "schema": "glaciereq.operability-receipt.v1",
+  "repository": "GlacierEQ/openai-reasoning-kv-sentinel",
+  "at": "2026-08-10T04:12Z",
+  "source_sha": "c1820cffe3e2c59e20cf7dccc12399b22949f06ee6325802f8c1f7757f574b93",
+  "entry": "scripts/operate.py",
+  "primary_output": {
+    "module": "reasoning_kv_sentinel",
+    "ok": true,
+    "repository": "GlacierEQ/openai-reasoning-kv-sentinel",
+    "smoke": {
+      "args": [
+        "[]"
+      ],
+      "content_checked": true,
+      "invoked": true,
+      "kind": "class",
+      "method": "compute_token_entropy",
+      "module_local": true,
+      "name": "ReasoningKVSentinel",
+      "result": 0.0
+    }
+  },
+  "dual_run_ok": true,
+  "result": "PASS"
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "glaciereq.proof-receipt.v1",
+  "repository": "GlacierEQ/openai-reasoning-kv-sentinel",
+  "source_sha": "c1820cffe3e2c59e20cf7dccc12399b22949f06ee6325802f8c1f7757f574b93",
+  "proof_id": "elite-openai-reasoning-kv-sentinel-1786335149",
+  "environment": {
+    "python": "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python",
+    "PYTHONPATH": "/Users/kcbflux/job-app/repos/openai-reasoning-kv-sentinel:/Users/kcbflux/job-app/repos/openai-reasoning-kv-sentinel/src",
+    "entry": "unittest"
+  },
+  "tests": [
+    "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
+  ],
+  "adversarial_tests": [
+    "tests/test_adversarial.py"
+  ],
+  "runtime": {
+    "operate": "scripts/operate.py (x2)",
+    "dual_run_ok": true,
+    "proof_dual_run_ok": true
+  },
+  "result": "PASS",
+  "limitations": [
+    "not production deployed",
+    "reference implementation only"
+  ],
+  "timestamp": "2026-08-10T04:12Z",
+  "artifact_hashes": {
+    "operability_receipt": "f28e37c07d73b1ed4666acb288453c2700fadb3cef278a491047c575dd7e8dc7"
+  }
+}

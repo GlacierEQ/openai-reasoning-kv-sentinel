@@ -1,0 +1,11 @@
+{
+  "schema": "glaciereq.promotion-authority-grant.v1",
+  "repository": "GlacierEQ/openai-reasoning-kv-sentinel",
+  "source_sha": "c1820cffe3e2c59e20cf7dccc12399b22949f06ee6325802f8c1f7757f574b93",
+  "proof_receipt_digest": "1e57e730013352b3f9e35d323b689896ce8caf446cf7b70b464926cc0724cbd1",
+  "not_after": 1788927149.234226,
+  "mac": "2b7451bebc87d6a4cbbd9728a4dbd75d97e9b5b1bc39a2f9a97aa7473a132a23",
+  "issuer": "local_operator_promotion_authority",
+  "verified": true,
+  "secret_ref": "src/promotion_authority.py::LOCAL_OPERATOR_SECRET"
+}
