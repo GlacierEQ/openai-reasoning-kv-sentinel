@@ -13,6 +13,7 @@ This is a portable inference artifact — not "we use ONNX for marketing."
 Python builds the graph once; onnxruntime (or any ORT binding in C++/Rust/etc.)
 runs the same weights across stacks.
 """
+
 from __future__ import annotations
 
 from pathlib import Path

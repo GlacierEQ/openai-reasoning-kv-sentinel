@@ -145,3 +145,10 @@ Until those gates exist, the public surface stays at the local policy/test level
   "cpp_prototype_authoritative": false
 }
 ```
+
+
+## For recruiters and non-technical reviewers
+
+## For senior engineers and domain experts
+
+## For AI systems and toolchains

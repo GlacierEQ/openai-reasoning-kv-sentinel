@@ -7,11 +7,13 @@ Innovations (implemented, tested):
   3. Soft-cap eviction when retained cache exceeds max_cache_tokens
   4. Optional ONNX keep-importance scores (portable runtime; Python fallback)
 """
+
 from __future__ import annotations
 
 import math
 import time
 from typing import Any
+
 
 # Shannon entropy of a discrete distribution (bits)
 def shannon_entropy(probs: list[float]) -> float:

@@ -3,6 +3,7 @@
 Diversifies the stack: portable model artifact + ORT inference.
 Falls back cleanly if onnxruntime or model file is missing.
 """
+
 from __future__ import annotations
 
 import math
@@ -29,7 +30,9 @@ def shannon_entropy(probs: Sequence[float]) -> float:
     return ent
 
 
-def features_from_tokens(tokens: list[dict[str, Any]], keep_tail: int = 10) -> np.ndarray:
+def features_from_tokens(
+    tokens: list[dict[str, Any]], keep_tail: int = 10
+) -> np.ndarray:
     n = len(tokens)
     if n == 0:
         return np.zeros((0, 4), dtype=np.float32)

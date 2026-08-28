@@ -1,7 +1,7 @@
 """Heavy tests for OpenAI Reasoning KV-Sentinel — real entropy + schema gates."""
+
 from __future__ import annotations
 
-import math
 import unittest
 
 from reasoning_kv_sentinel import (
@@ -50,9 +50,7 @@ class TestOpenAIReasoningKVSentinel(unittest.TestCase):
             max_cache_tokens=20, entropy_threshold=0.0, keep_tail=0
         )
         # all high entropy + anchors → would retain all without cap
-        tokens = [
-            {"id": i, "probs": [0.5, 0.5], "is_anchor": i < 3} for i in range(50)
-        ]
+        tokens = [{"id": i, "probs": [0.5, 0.5], "is_anchor": i < 3} for i in range(50)]
         retained, metrics = sentinel.prune_reasoning_trajectory(tokens)
         self.assertLessEqual(len(retained), 20)
         self.assertEqual(metrics["status"], "NOMINAL")
@@ -92,9 +90,7 @@ class TestOpenAIReasoningKVSentinel(unittest.TestCase):
         ]
         d = ZeroOverheadSchemaDispatcher(schemas)
         self.assertFalse(d.dispatch_tool_call("set_temp", {})["ok"])
-        self.assertFalse(
-            d.dispatch_tool_call("set_temp", {"celsius": "hot"})["ok"]
-        )
+        self.assertFalse(d.dispatch_tool_call("set_temp", {"celsius": "hot"})["ok"])
         self.assertTrue(d.dispatch_tool_call("set_temp", {"celsius": 22.5})["ok"])
 
     def test_invalid_ctor(self):

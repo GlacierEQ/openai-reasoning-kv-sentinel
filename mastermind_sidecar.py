@@ -3,11 +3,10 @@ Mastermind Sidecar — openai-reasoning-kv-sentinel
 Cross-domain health monitoring and coordination.
 """
 
-import hashlib
 import json
 import time
-from pathlib import Path
 from typing import Dict, Any
+
 
 class MastermindSidecar:
     """Lightweight sidecar for cross-domain health reporting."""
@@ -23,12 +22,13 @@ class MastermindSidecar:
             "repo": self.repo_name,
             "uptime_seconds": uptime,
             "status": "healthy",
-            "integrity": "ACTIVE"
+            "integrity": "ACTIVE",
         }
 
     def status(self) -> str:
         """Print status summary."""
         return json.dumps(self.health_report(), indent=2)
+
 
 if __name__ == "__main__":
     sidecar = MastermindSidecar()
