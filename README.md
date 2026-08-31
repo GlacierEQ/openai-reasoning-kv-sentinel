@@ -72,6 +72,30 @@ It uses the checked-in ONNX artifact when ONNX Runtime is available. Otherwise i
 
 `src/kv_entropy_pruner.cpp` is preserved as an earlier prototype. It contains a Shannon-entropy helper, but its current `prune_low_entropy_keys` demonstration uses only sequence length and returns a 25% count for sequences over 1000 entries. It does not mutate tensors and is **not the canonical proof of entropy-guided retention**.
 
+## Pointer-based context handoff
+
+The repository now also implements a small deterministic continuity primitive in [`src/context_handoff.py`](src/context_handoff.py).
+
+A `ContextPointer` binds a pointer ID and target to the exact SHA-256 of user-controlled content. A handoff resolves only active pointers, honors explicit supersession, records optional misses, and **fails closed when a required context pointer is absent or its content digest changes**.
+
+That allows a runtime architecture to carry a tiny startup pointer instead of preloading an entire history:
+
+```text
+startup
+   -> small user-authored pointer
+   -> exact content resolution
+   -> digest verification
+   -> supersession filtering
+   -> handoff receipt
+   -> downstream execution context
+```
+
+The local mechanism performs no network access and is not integrated with OpenAI infrastructure:
+
+`LOCAL_POINTER_HANDOFF_CONTRACT_NO_OPENAI_RUNTIME_INTEGRATION`
+
+Its purpose is to make the handoff contract testable: the user controls the referenced content; the orchestration layer is responsible for resolving the pointer before continuity-dependent execution.
+
 ## Native proof
 
 Run the bounded public verification path:
@@ -94,7 +118,9 @@ The checked-in tests cover:
 - count-based pressure capping;
 - required-field and primitive-type schema validation;
 - ONNX/NumPy feature-shape and scoring behavior;
-- optional scorer integration into the local retention policy.
+- optional scorer integration into the local retention policy;
+- required context pointer resolution and deterministic handoff receipts;
+- digest mismatch refusal, optional-pointer accounting, and supersession-aware pointer selection.
 
 ## What the tests do **not** establish
 
@@ -107,7 +133,8 @@ They do not establish:
 - correctness on actual model KV tensors;
 - OpenAI model compatibility, deployment, endorsement, or internal usage;
 - MCP registration or live APEX Highway / Mastermind mesh connectivity;
-- external tool execution through the local schema validator.
+- external tool execution through the local schema validator;
+- OpenAI runtime integration, account settings access, or production continuity enforcement by the local pointer contract.
 
 Any future reasoning-quality, memory, latency, throughput, or deployment claim requires a separate benchmark or integration receipt bound to the exact implementation and source revision.
 
