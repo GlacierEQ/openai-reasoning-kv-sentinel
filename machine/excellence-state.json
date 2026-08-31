@@ -31,12 +31,12 @@
     "CENTRAL_MECHANISM_PRESENT": {
       "status": "PASS",
       "at": "2026-08-10T06:25Z",
-      "evidence": "central mechanism in src/"
+      "evidence": "src/reasoning_kv_sentinel.py + src/context_handoff.py"
     },
     "DETERMINISTIC_PROOF_GREEN": {
-      "status": "PASS",
+      "status": "PENDING_CURRENT_HEAD",
       "at": "2026-08-10T06:25Z",
-      "evidence": "dual-run green tests"
+      "evidence": "historical promoted proof preserved; current pointer-handoff extension awaits exact-head workflow"
     },
     "ADVERSARIAL_SURVIVAL": {
       "status": "PASS",
@@ -192,5 +192,12 @@
   "proof_receipt": {
     "source_sha": "HYPER_VALIDATED_SHA256",
     "identity": "HYPER_VALIDATED_IDENTITY"
+  },
+  "current_head_extension": {
+    "mechanism": "src/context_handoff.py",
+    "state": "IMPLEMENTED_CURRENT_HEAD_NATIVE_PROOF_REQUIRED",
+    "tests": "tests/test_context_handoff.py",
+    "truth_gate": ".github/workflows/public-truth.yml",
+    "nonclaim": "no OpenAI runtime integration"
   }
 }
