@@ -1,1 +1,11 @@
-{"capabilities": ["hyper-scaling"]}
+{
+  "capabilities": [
+    "local-reasoning-record-retention-policy",
+    "local-schema-validation-gate-no-execution",
+    "deterministic-context-pointer-handoff",
+    "required-pointer-fail-closed",
+    "supersession-aware-context-selection"
+  ],
+  "evidence_state": "IMPLEMENTED_CURRENT_HEAD_NATIVE_PROOF_REQUIRED",
+  "runtime_integration": false
+}
