@@ -33,9 +33,11 @@ jobs:
           python -m py_compile \
             src/reasoning_kv_sentinel.py \
             src/onnx_kv_scorer.py \
+            src/context_handoff.py \
             scripts/verify_public_core.py \
             tests/test_sentinel.py \
-            tests/test_onnx_kv.py
+            tests/test_onnx_kv.py \
+            tests/test_context_handoff.py
 
       - name: Verify Python retention policy
         env:
@@ -60,6 +62,8 @@ jobs:
               "NO_REASONING_QUALITY_BENCHMARK",
               "not affiliated with, endorsed by, employed by, or deployed at OpenAI",
               "does not invoke a tool",
+              "LOCAL_POINTER_HANDOFF_CONTRACT_NO_OPENAI_RUNTIME_INTEGRATION",
+              "required context pointer",
           ]
           missing = [item for item in required if item not in readme]
           if missing:

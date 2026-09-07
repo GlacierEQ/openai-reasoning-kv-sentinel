@@ -17,6 +17,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from reasoning_kv_sentinel import ReasoningKVSentinel  # noqa: E402
+from context_handoff import build_pointer, resolve_handoff  # noqa: E402
 
 ARTIFACT_DIR = ROOT / "artifacts" / "public-core"
 SCENARIO_PATH = ARTIFACT_DIR / "retention-scenario.json"
@@ -94,10 +95,22 @@ def bounded_scenario() -> dict[str, Any]:
     }
 
 
+def handoff_scenario() -> dict[str, Any]:
+    content = "source_priority=user\ncontinuity_preflight=required\n"
+    pointer = build_pointer(
+        "user-continuity",
+        "user://continuity/bootstrap",
+        content,
+        authority="user",
+    )
+    return resolve_handoff([pointer], {pointer.target: content})
+
+
 def main() -> int:
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
     tests = run_tests()
     scenario = bounded_scenario()
+    handoff = handoff_scenario()
     rendered_scenario = json.dumps(scenario, indent=2, sort_keys=True) + "\n"
     SCENARIO_PATH.write_text(rendered_scenario, encoding="utf-8")
 
@@ -112,12 +125,16 @@ def main() -> int:
         "reasoning_quality_benchmark": False,
         "external_tool_execution": False,
         "live_mesh_integration": False,
+        "context_handoff": handoff,
+        "context_handoff_runtime_integration": False,
         "cpp_prototype_authoritative": False,
         "canonical_paths": [
             "README.md",
             "src/reasoning_kv_sentinel.py",
             "src/onnx_kv_scorer.py",
+            "src/context_handoff.py",
             "tests/test_sentinel.py",
+            "tests/test_context_handoff.py",
             "tests/test_onnx_kv.py",
         ],
     }

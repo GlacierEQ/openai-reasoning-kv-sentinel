@@ -11,12 +11,31 @@
     "deployed": false
   },
   "nonclaims": [
-    "no employer affiliation",
+    "no OpenAI affiliation, employment, endorsement, private access, or internal runtime integration",
+    "no production model-server KV tensor mutation",
+    "no production continuity handoff deployment",
+    "no network retrieval by the pointer contract",
     "no production deployment without receipt"
   ],
   "donor_plan": {
     "mode": "none",
     "donors": []
   },
-  "frozen_at": "2026-08-10T04:12Z"
+  "frozen_at": "2026-08-10T04:12Z",
+  "current_extension": {
+    "state": "IMPLEMENTED_CURRENT_HEAD_NATIVE_PROOF_REQUIRED",
+    "mechanism": "deterministic user-authored context pointer handoff",
+    "implemented": true,
+    "tested_in_source": true,
+    "deployed": false,
+    "runtime_integration": false
+  },
+  "verified_scope": [
+    "local reasoning-record retention policy under count budget",
+    "local schema validation gate that does not execute tools",
+    "deterministic context pointers bound to exact content SHA-256",
+    "fail-closed required-pointer resolution",
+    "supersession-aware active pointer selection"
+  ],
+  "next_gate": "exact-current-head public truth workflow must verify retention and context-handoff tests"
 }
