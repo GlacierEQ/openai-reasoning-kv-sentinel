@@ -13,6 +13,14 @@ from onnx_kv_scorer import OnnxKeepScorer, features_from_tokens  # noqa: E402
 from reasoning_kv_sentinel import ReasoningKVSentinel  # noqa: E402
 
 
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
+
+
+@unittest.skipUnless(HAS_NUMPY, "numpy required for ONNX scoring path")
 class TestOnnxKv(unittest.TestCase):
     def test_features_shape(self):
         tokens = [

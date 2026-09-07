@@ -10,7 +10,10 @@ import math
 from pathlib import Path
 from typing import Any, Sequence
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    np = None
 
 DEFAULT_MODEL = (
     Path(__file__).resolve().parents[1] / "models" / "token_keep_importance.onnx"
