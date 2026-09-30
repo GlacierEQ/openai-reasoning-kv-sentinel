@@ -4,12 +4,12 @@
   "source_sha": "c1820cffe3e2c59e20cf7dccc12399b22949f06ee6325802f8c1f7757f574b93",
   "proof_id": "elite-openai-reasoning-kv-sentinel-1786335149",
   "environment": {
-    "python": "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python",
-    "PYTHONPATH": "/Users/kcbflux/job-app/repos/openai-reasoning-kv-sentinel:/Users/kcbflux/job-app/repos/openai-reasoning-kv-sentinel/src",
+    "python": "${HOME}/job-app/excellence/.venv-elite/bin/python",
+    "PYTHONPATH": "${HOME}/job-app/repos/openai-reasoning-kv-sentinel:${HOME}/job-app/repos/openai-reasoning-kv-sentinel/src",
     "entry": "unittest"
   },
   "tests": [
-    "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
+    "${HOME}/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
   ],
   "adversarial_tests": [
     "tests/test_adversarial.py"
